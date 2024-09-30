@@ -4,7 +4,9 @@ class AppTheme {
   AppTheme._();
 
   static ThemeData get lightTheme =>
-      ThemeData(scaffoldBackgroundColor: Colors.white,
+      ThemeData(
+          fontFamily: "Inter",
+          scaffoldBackgroundColor: Colors.white,
       colorScheme: const ColorScheme.light(
         primary: Color(0xFF42B4CA),
         secondary: Color(0xFFD5E9ED),
