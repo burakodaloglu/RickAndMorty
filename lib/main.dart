@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rickandmorty/app/router.dart';
+import 'package:rickandmorty/navigation/router.dart';
 
 import 'app/theme.dart';
 
