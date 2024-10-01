@@ -1,10 +1,11 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:rickandmorty/view/app_view.dart';
-
+import 'package:provider/provider.dart';
+import 'package:rickandmorty/view/screen/episodes_view/episodes_view.dart';
+import 'package:rickandmorty/view/screen/favorites_view/favorites_view.dart';
+import '../view/app_view.dart';
+import '../view/screen/characters_view/charactersViewModel.dart';
 import '../view/screen/characters_view/characters_view.dart';
-import '../view/screen/episodes_view/episodes_view.dart';
-import '../view/screen/favorites_view/favorites_view.dart';
 import '../view/screen/locations_view/locations_view.dart';
 
 final _routerKey = GlobalKey<NavigatorState>();
@@ -12,10 +13,10 @@ final _routerKey = GlobalKey<NavigatorState>();
 class AppRoutes {
   AppRoutes._();
 
-  static const characters = '/';
-  static const favorites = '/favorites';
-  static const locations = '/locations';
-  static const episodes = '/episodes';
+  static const String characters = '/';
+  static const String favourites = '/favourites';
+  static const String locations = '/locations';
+  static const String sections = '/sections';
 }
 
 final router = GoRouter(
@@ -23,30 +24,45 @@ final router = GoRouter(
   initialLocation: AppRoutes.characters,
   routes: [
     StatefulShellRoute.indexedStack(
-        builder: (context, state, navigationShell) => AppView(
-              navigationShell: navigationShell,
+      builder: (context, state, navigationShell) =>
+          AppView(navigationShell: navigationShell),
+      branches: [
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: AppRoutes.characters,
+              builder: (context, state) => ChangeNotifierProvider(
+                create: (context) => CharactersViewmodel(),
+                child: const CharactersView(),
+              ),
             ),
-        branches: [
-          StatefulShellBranch(routes: [
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
             GoRoute(
-                path: AppRoutes.characters,
-                builder: (context, state) => const CharactersView())
-          ]),
-          StatefulShellBranch(routes: [
+              path: AppRoutes.favourites,
+              builder: (context, state) => const FavoritesView(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
             GoRoute(
-                path: AppRoutes.favorites,
-                builder: (context, state) => const FavoritesView())
-          ]),
-          StatefulShellBranch(routes: [
+              path: AppRoutes.locations,
+              builder: (context, state) => const LocationsView(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
             GoRoute(
-                path: AppRoutes.locations,
-                builder: (context, state) => const LocationsView())
-          ]),
-          StatefulShellBranch(routes: [
-            GoRoute(
-                path: AppRoutes.episodes,
-                builder: (context, state) => const EpisodesView())
-          ])
-        ]),
+              path: AppRoutes.sections,
+              builder: (context, state) => const EpisodesView(),
+            ),
+          ],
+        ),
+      ],
+    ),
   ],
 );
