@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../core/localization/locator.dart';
 import '../../../core/service/CharacterApiService.dart';
 import '../../../model/character.dart';
@@ -35,6 +36,18 @@ class CharactersViewmodel extends ChangeNotifier {
     currentPage++;
     _charactersModel!.info = moreData.info;
     _charactersModel!.characters.addAll(moreData.characters);
+    notifyListeners();
+  }
+
+  void clearCharacters() {
+    _charactersModel = null;
+    currentPage = 1;
+    notifyListeners();
+  }
+
+  void getCharactersFilter(String name) async {
+    clearCharacters();
+    _charactersModel = await _apiService.getCharacters(params: {'name': name});
     notifyListeners();
   }
 }

@@ -19,25 +19,20 @@ class _CharactersViewState extends State<CharactersView> {
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = context.watch<CharactersViewmodel>();
     return Scaffold(
       body: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 9),
           child: Column(
             children: [
-              _searchInputWidget(context),
-              Consumer<CharactersViewmodel>(
-                builder: (context, viewModel, child) {
-                  if (viewModel.charactersModel == null) {
-                    return const CircularProgressIndicator.adaptive();
-                  } else {
-                    return CharacterCardListView(
+              _searchInputWidget(context, viewModel: viewModel),
+              viewModel.charactersModel == null
+                  ? const CircularProgressIndicator.adaptive()
+                  : CharacterCardListView(
                       characters: viewModel.charactersModel!.characters,
-                      onLoadMore:() => viewModel.getCharactersMore(),
+                      onLoadMore: () => viewModel.getCharactersMore(),
                       loadMore: viewModel.loadMore,
-                    );
-                  }
-                },
               )
             ],
           ),
@@ -46,12 +41,15 @@ class _CharactersViewState extends State<CharactersView> {
     );
   }
 
-  Widget _searchInputWidget(BuildContext context) {
+  Widget _searchInputWidget(BuildContext context,
+      {required CharactersViewmodel viewModel}) {
     return Padding(
       padding: const EdgeInsets.only(top: 12, bottom: 16),
-      child: TextField(
+      child: TextFormField(
+        textInputAction: TextInputAction.search,
+        onFieldSubmitted:viewModel.getCharactersFilter,
         decoration: InputDecoration(
-          labelText: 'Karakterlerde Ara',
+          labelText: 'Search',
           labelStyle: TextStyle(
             color: Theme.of(context).colorScheme.onSurface,
           ),
