@@ -46,10 +46,10 @@ class CharacterCardView extends StatelessWidget {
                       ),
                       const SizedBox(height: 5),
                       _infoWidget(
-                          type: 'Köken', value: characterModel.origin.name),
+                          type: 'Origin', value: characterModel.origin.name),
                       const SizedBox(height: 4),
                       _infoWidget(
-                          type: 'Durum',
+                          type: 'Status',
                           value:
                           '${characterModel.status} - ${characterModel.species}'),
                     ],
