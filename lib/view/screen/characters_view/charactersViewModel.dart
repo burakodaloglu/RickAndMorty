@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:rickandmorty/core/service/remote/character_api_service.dart';
 
 import '../../../core/localization/locator.dart';
-import '../../../core/service/CharacterApiService.dart';
 import '../../../model/character.dart';
 
 class CharactersViewmodel extends ChangeNotifier {
-  final _apiService = locator<ApiService>();
+  final _apiService = locator<CharacterApiService>();
 
   CharactersModel? _charactersModel;
 
   CharactersModel? get charactersModel => _charactersModel;
+
+  void clearCharacters() {
+    _charactersModel = null;
+    currentPageIndex = 1;
+    notifyListeners();
+  }
 
   void getCharacters() async {
     _charactersModel = await _apiService.getCharacters();
@@ -17,7 +23,7 @@ class CharactersViewmodel extends ChangeNotifier {
   }
 
   bool loadMore = false;
-  int currentPage = 1;
+  int currentPageIndex = 1;
 
   void setLoadMore(bool value) {
     loadMore = value;
@@ -27,27 +33,24 @@ class CharactersViewmodel extends ChangeNotifier {
   void getCharactersMore() async {
     if (loadMore) return;
 
-    if (_charactersModel?.info.pages == currentPage) return;
+    if (_charactersModel!.info.pages == currentPageIndex) return;
+
     setLoadMore(true);
-    final moreData =
+    final data =
         await _apiService.getCharacters(url: _charactersModel?.info.next);
-
     setLoadMore(false);
-    currentPage++;
-    _charactersModel!.info = moreData.info;
-    _charactersModel!.characters.addAll(moreData.characters);
+
+    currentPageIndex++;
+
+    _charactersModel!.info = data.info;
+    _charactersModel!.characters.addAll(data.characters);
+
     notifyListeners();
   }
 
-  void clearCharacters() {
-    _charactersModel = null;
-    currentPage = 1;
-    notifyListeners();
-  }
-
-  void getCharactersFilter(String name) async {
+  void getCharactersByName(String name) async {
     clearCharacters();
-    _charactersModel = await _apiService.getCharacters(params: {'name': name});
+    _charactersModel = await _apiService.getCharacters(args: {'name': name});
     notifyListeners();
   }
 }

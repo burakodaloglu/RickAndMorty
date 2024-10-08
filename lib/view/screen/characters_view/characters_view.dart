@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rickandmorty/view/widget/character_card_listView.dart';
+
+import '../../widget/character_card_listView.dart';
 import 'charactersViewModel.dart';
 
 class CharactersView extends StatefulWidget {
@@ -33,7 +34,7 @@ class _CharactersViewState extends State<CharactersView> {
                       characters: viewModel.charactersModel!.characters,
                       onLoadMore: () => viewModel.getCharactersMore(),
                       loadMore: viewModel.loadMore,
-              )
+                    )
             ],
           ),
         ),
@@ -47,10 +48,10 @@ class _CharactersViewState extends State<CharactersView> {
       padding: const EdgeInsets.only(top: 12, bottom: 16),
       child: TextFormField(
         textInputAction: TextInputAction.search,
-        onFieldSubmitted:viewModel.getCharactersFilter,
+        onFieldSubmitted: viewModel.getCharactersByName,
         decoration: InputDecoration(
-          labelText: 'Search',
-          labelStyle: TextStyle(
+          hintText: 'Karakterlerde Ara',
+          hintStyle: TextStyle(
             color: Theme.of(context).colorScheme.onSurface,
           ),
           border: const OutlineInputBorder(),

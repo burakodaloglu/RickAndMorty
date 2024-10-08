@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:rickandmorty/app/theme.dart';
-
 import 'core/localization/locator.dart';
 import 'navigation/router.dart';
 
-void main() {
-  setupLocator();
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await setupLocator();
   runApp(const MyApp());
 }
 

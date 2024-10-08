@@ -1,18 +1,21 @@
-import 'dart:developer';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:rickandmorty/core/service/local/shared_preferences_helper.dart';
+import 'package:rickandmorty/model/character.dart';
 
-import '../../model/character.dart';
-import '../screen/characters_view/charactersViewModel.dart';
+import '../../core/localization/locator.dart';
 import 'character_card_view.dart';
 
 class CharacterCardListView extends StatefulWidget {
   final List<CharacterModel> characters;
-  final VoidCallback onLoadMore;
+  final VoidCallback? onLoadMore;
   final bool loadMore;
-  const CharacterCardListView({super.key, required this.characters, required this.onLoadMore, this.loadMore=false});
+
+  const CharacterCardListView({
+    super.key,
+    required this.characters,
+    this.onLoadMore,
+    this.loadMore = false,
+  });
 
   @override
   State<CharacterCardListView> createState() => _CharacterCardListViewState();
@@ -20,39 +23,64 @@ class CharacterCardListView extends StatefulWidget {
 
 class _CharacterCardListViewState extends State<CharacterCardListView> {
   final _scrollController = ScrollController();
+  bool _isLoading = true;
+  List<int> _favoritedList = [];
 
   @override
   void initState() {
-    _detectScroll();
+    _getFavorites();
+    _detectScrollBottom();
     super.initState();
   }
 
-  void _detectScroll() {
-    _scrollController.addListener(() {
-      final maxScroll = _scrollController.position.maxScrollExtent;
-      final currentScroll = _scrollController.position.pixels;
-      if (maxScroll - currentScroll <= 200) {
-        widget.onLoadMore();
-      }
-    });
+  void _setLoading(bool value) {
+    _isLoading = value;
+    setState(() {});
   }
+
+  void _getFavorites() async {
+    _favoritedList = locator<SharedPreferencesHelper>().getSavedCharacters();
+    _setLoading(false);
+    setState(() {});
+  }
+
+  void _detectScrollBottom() {
+    if(widget.onLoadMore != null) {
+      _scrollController.addListener(() {
+        final maxScroll = _scrollController.position.maxScrollExtent;
+        final currentPosition = _scrollController.position.pixels;
+        const int delta = 200;
+
+        if (maxScroll - currentPosition <= delta) {
+          widget.onLoadMore!();
+        }
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      child: ListView.builder(
-        itemCount: widget.characters.length,
-        controller: _scrollController,
-        itemBuilder: (context, index) {
-          final characterModel = widget.characters[index];
-          return Column(
-            children: [
-              CharacterCardView(characterModel: characterModel),
-              if (widget.loadMore && index == widget.characters.length - 1)
-                const CircularProgressIndicator.adaptive()
-            ],
-          );
-        },
-      ),
-    );
+    if (_isLoading) {
+      return const CircularProgressIndicator.adaptive();
+    } else {
+      return Flexible(
+        child: ListView.builder(
+          itemCount: widget.characters.length,
+          controller: _scrollController,
+          itemBuilder: (context, index) {
+            final characterModel = widget.characters[index];
+            final bool isFavorited = _favoritedList.contains(characterModel.id);
+            return Column(
+              children: [
+                CharacterCardView(
+                    characterModel: characterModel, isFavorited: isFavorited),
+                if (widget.loadMore && index == widget.characters.length - 1)
+                  const CircularProgressIndicator.adaptive()
+              ],
+            );
+          },
+        ),
+      );
+    }
   }
 }
