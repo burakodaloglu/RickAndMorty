@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:rickandmorty/model/episode_model.dart';
 
 import '../../../model/character.dart';
 
@@ -21,6 +22,23 @@ class CharacterApiService {
       final response = await _dio.get('/character/${id.join(',')}');
       return (response.data as List)
           .map((e) => CharacterModel.fromJson(e))
+          .toList();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<EpisodeModel>> getEpisodes(List<String> list) async {
+    try {
+      final List<String> episodeNumbers =
+      list.map((e) => e.split('/').last).toList();
+
+      String episodes = episodeNumbers.join(',');
+      if (list.length == 1) episodes = '$episodes,';
+
+      final response = await _dio.get('/episode/$episodes');
+      return (response.data as List)
+          .map((e) => EpisodeModel.fromMap(e))
           .toList();
     } catch (e) {
       rethrow;

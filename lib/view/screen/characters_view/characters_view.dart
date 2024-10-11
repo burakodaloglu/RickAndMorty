@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rickandmorty/view/widget/appbar_widget.dart';
 
 import '../../widget/character_card_listView.dart';
 import 'charactersViewModel.dart';
@@ -22,6 +23,7 @@ class _CharactersViewState extends State<CharactersView> {
   Widget build(BuildContext context) {
     final viewModel = context.watch<CharactersViewmodel>();
     return Scaffold(
+      appBar: AppbarWidget(title: "Rick and Morty"),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 9),
@@ -50,7 +52,7 @@ class _CharactersViewState extends State<CharactersView> {
         textInputAction: TextInputAction.search,
         onFieldSubmitted: viewModel.getCharactersByName,
         decoration: InputDecoration(
-          hintText: 'Karakterlerde Ara',
+          hintText: 'Search',
           hintStyle: TextStyle(
             color: Theme.of(context).colorScheme.onSurface,
           ),
