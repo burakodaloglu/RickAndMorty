@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rickandmorty/model/character.dart';
+import 'package:rickandmorty/model/character_model.dart';
+import 'package:rickandmorty/view/widget/decorated_background.dart';
 
 import '../../../model/episode_model.dart';
 import '../../widget/appbar_widget.dart';
@@ -24,48 +25,32 @@ class _CharactersDetailViewState extends State<CharactersDetailView> {
         .getEpisodes(widget.characterModel.episode);
   }
 
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          extendBodyBehindAppBar: true,
-          appBar: AppbarWidget(
-            title: widget.characterModel.name,
-            transparentBackground: true,
+        extendBodyBehindAppBar: true,
+        appBar: const AppbarWidget(
+          title: 'Character',
+          transparentBackground: true,
+        ),
+        body: DecoratedBackground(
+          topChild: _characterAvatar(context),
+          child: Column(
+            children: [
+              const SizedBox(height: 13),
+              _characterName(),
+              const SizedBox(height: 15),
+              _labelsView(context),
+              const SizedBox(height: 38),
+              _episodes(),
+              const SizedBox(height: 15),
+              _episodeListView(),
+            ],
           ),
-          body: Container(
-            decoration: const BoxDecoration(
-                image: DecorationImage(
-              image: AssetImage("assets/images/bg-image.jpg"),
-              alignment: Alignment.topCenter,
-              fit: BoxFit.fitWidth,
-            )),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                _characterAvatar(context),
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.surface,
-                        borderRadius: const BorderRadius.vertical(
-                            top: Radius.circular(50))),
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 13),
-                        _characterName(),
-                        const SizedBox(height: 15),
-                        _labelsView(context),
-                        const SizedBox(height: 38),
-                        _episodes(),
-                        _episodeListView()
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          )),
+        ),
+      ),
     );
   }
 

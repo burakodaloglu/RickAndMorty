@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:rickandmorty/model/episode_model.dart';
-
-import '../../../model/character.dart';
+import '../../../model/character_model.dart';
+import '../../../model/episode_model.dart';
+import '../../../model/locations_model.dart';
 
 class CharacterApiService {
   final _dio = Dio(BaseOptions(baseUrl: 'https://rickandmortyapi.com/api'));
@@ -17,9 +17,9 @@ class CharacterApiService {
     }
   }
 
-  Future<List<CharacterModel>> getFavoritesCharacters(List<int> id) async {
+  Future<List<CharacterModel>> getFavoritesCharacters(List<int> idList) async {
     try {
-      final response = await _dio.get('/character/${id.join(',')}');
+      final response = await _dio.get('/character/${idList.join(',')}');
       return (response.data as List)
           .map((e) => CharacterModel.fromJson(e))
           .toList();
@@ -31,7 +31,7 @@ class CharacterApiService {
   Future<List<EpisodeModel>> getEpisodes(List<String> list) async {
     try {
       final List<String> episodeNumbers =
-      list.map((e) => e.split('/').last).toList();
+          list.map((e) => e.split('/').last).toList();
 
       String episodes = episodeNumbers.join(',');
       if (list.length == 1) episodes = '$episodes,';
@@ -40,6 +40,26 @@ class CharacterApiService {
       return (response.data as List)
           .map((e) => EpisodeModel.fromMap(e))
           .toList();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<LocationModel> getLocations({String? url}) async {
+    try {
+      final response = await _dio.get(url ?? '/location');
+      return LocationModel.fromMap(response.data);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<CharacterModel>> getResidents(List<String> residentsUrl) async {
+    final List<int> idList =
+        residentsUrl.map((e) => int.parse(e.split('/').last)).toList();
+
+    try {
+      return await getFavoritesCharacters(idList);
     } catch (e) {
       rethrow;
     }

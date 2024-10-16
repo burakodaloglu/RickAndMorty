@@ -4,7 +4,7 @@ import 'package:rickandmorty/core/service/local/shared_preferences_helper.dart';
 import 'package:rickandmorty/navigation/router.dart';
 
 import '../../core/localization/locator.dart';
-import '../../model/character.dart';
+import '../../model/character_model.dart';
 
 class CharacterCardView extends StatefulWidget {
   final CharacterModel characterModel;

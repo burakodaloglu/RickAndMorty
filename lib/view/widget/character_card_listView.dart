@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rickandmorty/core/service/local/shared_preferences_helper.dart';
-import 'package:rickandmorty/model/character.dart';
+import 'package:rickandmorty/model/character_model.dart';
 
 import '../../core/localization/locator.dart';
 import 'character_card_view.dart';

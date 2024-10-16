@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rickandmorty/core/service/remote/character_api_service.dart';
 
 import '../../../core/localization/locator.dart';
-import '../../../model/character.dart';
+import '../../../model/character_model.dart';
 
 class CharactersViewmodel extends ChangeNotifier {
   final _apiService = locator<CharacterApiService>();

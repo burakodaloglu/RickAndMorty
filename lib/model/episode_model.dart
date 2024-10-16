@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 class EpisodeModel {
@@ -32,7 +31,7 @@ class EpisodeModel {
       id: map['id'] as int,
       name: map['name'] as String,
       episode:
-      'Bölüm ${int.parse(episodeList.first)} Sezon ${int.parse(episodeList.last)}',
+      'Season ${int.parse(episodeList.first)} - Episode ${int.parse(episodeList.last)}',
       characters: List<String>.from(
         (map['characters'] as List),
       ),
