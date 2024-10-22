@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rickandmorty/model/character_model.dart';
 import 'package:rickandmorty/view/widget/decorated_background.dart';
+import 'package:rickandmorty/view/widget/episodes_listView.dart';
 
 import '../../../model/episode_model.dart';
 import '../../widget/appbar_widget.dart';
@@ -58,36 +59,7 @@ class _CharactersDetailViewState extends State<CharactersDetailView> {
     return Flexible(
       child: Consumer<CharacterDetailViewmodel>(
         builder: (context, viewModel, child) {
-          return ListView.separated(
-            padding: EdgeInsets.zero,
-            itemCount: viewModel.episodes.length,
-            itemBuilder: (context, index) {
-              final EpisodeModel model = viewModel.episodes[index];
-              return ListTile(
-                leading: const Icon(
-                  Icons.face_retouching_natural,
-                  size: 36,
-                ),
-                trailing: const Icon(Icons.keyboard_arrow_right),
-                title: Text(
-                  model.episode,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                subtitle: Text(
-                  model.name,
-                  style: const TextStyle(fontSize: 12),
-                ),
-              );
-            },
-            separatorBuilder: (context, index) => Divider(
-              color: Theme.of(context).colorScheme.tertiary,
-              indent: 30,
-              endIndent: 30,
-              height: 0,
-            ),
-          );
+          return EpisodesListView(episodes: viewModel.episodes);
         },
       ),
     );

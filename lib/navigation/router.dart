@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:rickandmorty/view/screen/characters_detail_view/character_detail_viewModel.dart';
+import 'package:rickandmorty/view/screen/episodes_characters_view/episodes_characters_view.dart';
 import 'package:rickandmorty/view/screen/episodes_view/episodes_view.dart';
 import 'package:rickandmorty/view/screen/favorites_view/favorites_view.dart';
 import 'package:rickandmorty/view/screen/locations_view/locations_viewModel.dart';
@@ -9,11 +10,14 @@ import 'package:rickandmorty/view/screen/residents_view/residents_view.dart';
 import 'package:rickandmorty/view/screen/residents_view/residents_viewModel.dart';
 
 import '../model/character_model.dart';
+import '../model/episode_model.dart';
 import '../model/locations_model.dart';
 import '../view/app_view.dart';
 import '../view/screen/characters_detail_view/characters_detail_view.dart';
 import '../view/screen/characters_view/charactersViewModel.dart';
 import '../view/screen/characters_view/characters_view.dart';
+import '../view/screen/episodes_characters_view/episodes_characters_viewModel.dart';
+import '../view/screen/episodes_view/episodes_viewModel.dart';
 import '../view/screen/favorites_view/favorites_viewModel.dart';
 import '../view/screen/locations_view/locations_view.dart';
 
@@ -25,13 +29,16 @@ class AppRoutes {
   static const String characters = '/';
   static const String favourites = '/favourites';
   static const String locations = '/locations';
-  static const String sections = '/sections';
+  static const String episodes = '/episodes';
 
   static const String detail = 'charactersDetail';
   static const String charactersDetail = '/charactersDetail';
 
   static const String residentsRoute = 'residentsDetail';
   static const String residents = '/locations/residentsDetail';
+
+  static const String episodesCharacterRoute = '/episodesCharacter';
+  static const String episodesCharacter = '/episodes/episodesCharacter';
 }
 
 final router = GoRouter(
@@ -93,8 +100,20 @@ final router = GoRouter(
         StatefulShellBranch(
           routes: [
             GoRoute(
-              path: AppRoutes.sections,
-              builder: (context, state) => const EpisodesView(),
+              path: AppRoutes.episodes,
+              builder: (context, state) => ChangeNotifierProvider(
+                  create: (context) => EpisodesViewmodel(),
+                  child: const EpisodesView()
+              ),
+              routes: [
+                GoRoute(
+                  path: AppRoutes.episodesCharacterRoute,
+                  builder: (context, state) => ChangeNotifierProvider(
+                      create: (context) => EpisodesCharactersViewmodel(),
+                      child: EpisodesCharactersView(
+                          episodeModel: state.extra as EpisodeModel)),
+                )
+              ],
             ),
           ],
         ),

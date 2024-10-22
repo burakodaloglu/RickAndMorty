@@ -54,12 +54,20 @@ class CharacterApiService {
     }
   }
 
-  Future<List<CharacterModel>> getResidents(List<String> residentsUrl) async {
+  Future<List<CharacterModel>> getCharactersFromUrlList(List<String> residentsUrl) async {
     final List<int> idList =
         residentsUrl.map((e) => int.parse(e.split('/').last)).toList();
-
     try {
       return await getFavoritesCharacters(idList);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<EpisodesModel> getAllEpisodes({String? url}) async {
+    try {
+      final response = await _dio.get(url ?? '/episode');
+      return EpisodesModel.fromMap(response.data);
     } catch (e) {
       rethrow;
     }

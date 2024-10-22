@@ -12,7 +12,7 @@ class ResidentsViewmodel extends ChangeNotifier {
   List<CharacterModel> get residents => _residents;
 
   void getResidents(List residentsUrl) async {
-    _residents = await _apiService.getResidents(residentsUrl.map((e) => e.toString()).toList());
+    _residents = await _apiService.getCharactersFromUrlList(residentsUrl.map((e) => e.toString()).toList());
     notifyListeners();
   }
 }
