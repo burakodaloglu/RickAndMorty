@@ -26,7 +26,7 @@ class _LocationsViewState extends State<LocationsView> {
       child: Scaffold(
         extendBodyBehindAppBar: true,
         appBar: const AppbarWidget(
-          title: 'Konumlar',
+          title: 'Locations',
           transparentBackground: true,
         ),
         body: Center(

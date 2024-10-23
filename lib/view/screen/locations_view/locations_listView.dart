@@ -64,9 +64,9 @@ class _LocationListViewState extends State<LocationListView> {
               ),
               subtitle: Column(
                 children: [
-                  _subtitleItem(text: 'Tür: ', value: location.type),
+                  _subtitleItem(text: 'Type: ', value: location.type),
                   _subtitleItem(
-                    text: 'Kişi Sayısı: ',
+                    text: 'Number of people: ',
                     value: location.residents.length.toString(),
                   ),
                 ],
