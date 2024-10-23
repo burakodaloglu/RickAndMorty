@@ -58,10 +58,17 @@ class _CharactersViewState extends State<CharactersView> {
           ),
           border: const OutlineInputBorder(),
           prefixIcon: const Icon(Icons.search),
-          suffixIcon: IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.more_vert),
-          ),
+          suffixIcon: PopupMenuButton(
+              icon: const Icon(Icons.more_vert),
+              onSelected: (value) => viewModel.onCharacterTypeChanged(value),
+              itemBuilder: (context) {
+                return ChatactersViewType.values
+                    .map((e) => PopupMenuItem<ChatactersViewType>(
+                          value: e,
+                          child: Text(e.name),
+                        ))
+                    .toList();
+              }),
         ),
       ),
     );

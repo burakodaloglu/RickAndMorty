@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:rickandmorty/navigation/router.dart';
 
 class AppbarWidget extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -15,7 +17,11 @@ class AppbarWidget extends StatelessWidget implements PreferredSizeWidget {
         title,
         style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
       ),
-      actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.settings))],
+      actions: [
+        IconButton(
+            onPressed: () => context.push(AppRoutes.settings),
+            icon: const Icon(Icons.settings))
+      ],
     );
   }
 

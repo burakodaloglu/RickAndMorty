@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:rickandmorty/navigation/router.dart';
 import 'package:rickandmorty/view/screen/episodes_view/episodes_viewModel.dart';
 import 'package:rickandmorty/view/widget/decorated_background.dart';
 import 'package:rickandmorty/view/widget/episodes_listView.dart';
@@ -25,27 +24,33 @@ class _EpisodesViewState extends State<EpisodesView> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Scaffold(
-            extendBodyBehindAppBar: true,
-            appBar:
-                AppbarWidget(title: 'Episodes', transparentBackground: true),
-            body: DecoratedBackground(
-              topChild: SizedBox(height: 74),
-              child: Consumer<EpisodesViewmodel>(
-                  builder: (context, viewModel, child) {
-                if (viewModel.episodesModel == null) {
-                  return const CircularProgressIndicator.adaptive();
-                } else {
-                  return Padding(
-                      padding: const EdgeInsets.only(top: 30),
-                    child: EpisodesListView(
+      child: Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: const AppbarWidget(
+          title: 'Episodes',
+          transparentBackground: true,
+        ),
+        body: DecoratedBackground(
+          topChild: const SizedBox(height: 74),
+          child: Consumer<EpisodesViewmodel>(
+            builder: (context, viewModel, child) {
+              if (viewModel.episodesModel == null) {
+                return const Center(
+                    child: CircularProgressIndicator.adaptive());
+              } else {
+                return Padding(
+                  padding: const EdgeInsets.only(top: 30),
+                  child: EpisodesListView(
                     episodes: viewModel.episodesModel!.episodes,
                     onLoadMore: viewModel.onLoadMore,
                     loadMore: viewModel.loadMore,
-                    ),
-                  );
-                }
-              }),
-            )));
+                  ),
+                );
+              }
+            },
+          ),
+        ),
+      ),
+    );
   }
 }

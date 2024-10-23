@@ -4,8 +4,12 @@ import 'package:rickandmorty/core/service/remote/character_api_service.dart';
 import '../../../core/localization/locator.dart';
 import '../../../model/character_model.dart';
 
+enum ChatactersViewType { all, alive, dead, unknown }
+
 class CharactersViewmodel extends ChangeNotifier {
   final _apiService = locator<CharacterApiService>();
+
+  ChatactersViewType chatactersViewType = ChatactersViewType.all;
 
   CharactersModel? _charactersModel;
 
@@ -51,6 +55,17 @@ class CharactersViewmodel extends ChangeNotifier {
   void getCharactersByName(String name) async {
     clearCharacters();
     _charactersModel = await _apiService.getCharacters(args: {'name': name});
+    notifyListeners();
+  }
+
+  void onCharacterTypeChanged(ChatactersViewType type) async {
+    chatactersViewType = type;
+    clearCharacters();
+    Map<String, dynamic>? args;
+    if (type != ChatactersViewType.all) {
+      args = {'status': type.name};
+    }
+    _charactersModel = await _apiService.getCharacters(args: args);
     notifyListeners();
   }
 }

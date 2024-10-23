@@ -8,6 +8,8 @@ import 'package:rickandmorty/view/screen/favorites_view/favorites_view.dart';
 import 'package:rickandmorty/view/screen/locations_view/locations_viewModel.dart';
 import 'package:rickandmorty/view/screen/residents_view/residents_view.dart';
 import 'package:rickandmorty/view/screen/residents_view/residents_viewModel.dart';
+import 'package:rickandmorty/view/screen/settings_view/settings_view.dart';
+import 'package:rickandmorty/view/screen/settings_view/settings_viewModel.dart';
 
 import '../model/character_model.dart';
 import '../model/episode_model.dart';
@@ -30,6 +32,7 @@ class AppRoutes {
   static const String favourites = '/favourites';
   static const String locations = '/locations';
   static const String episodes = '/episodes';
+  static const String settings = '/settings';
 
   static const String detail = 'charactersDetail';
   static const String charactersDetail = '/charactersDetail';
@@ -103,8 +106,7 @@ final router = GoRouter(
               path: AppRoutes.episodes,
               builder: (context, state) => ChangeNotifierProvider(
                   create: (context) => EpisodesViewmodel(),
-                  child: const EpisodesView()
-              ),
+                  child: const EpisodesView()),
               routes: [
                 GoRoute(
                   path: AppRoutes.episodesCharacterRoute,
@@ -118,6 +120,13 @@ final router = GoRouter(
           ],
         ),
       ],
+    ),
+    GoRoute(
+      path: AppRoutes.settings,
+      builder: (context, state) => ChangeNotifierProvider(
+        create: (context) => SettingsViewmodel(),
+        child: const SettingsView(),
+      ),
     ),
   ],
 );

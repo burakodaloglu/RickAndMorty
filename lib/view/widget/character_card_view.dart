@@ -59,29 +59,33 @@ class _CharacterCardViewState extends State<CharacterCardView> {
                       height: 100,
                     ),
                   ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 6, horizontal: 17),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          widget.characterModel.name,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
+                  Flexible(
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.symmetric(vertical: 6, horizontal: 17),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            maxLines: 1,
+                            widget.characterModel.name,
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              overflow: TextOverflow.fade
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 5),
-                        _infoWidget(
-                            type: 'Origin',
-                            value: widget.characterModel.origin.name),
-                        const SizedBox(height: 4),
-                        _infoWidget(
-                            type: 'Status',
-                            value:
-                                '${widget.characterModel.status} - ${widget.characterModel.species}'),
-                      ],
+                          const SizedBox(height: 5),
+                          _infoWidget(
+                              type: 'Origin',
+                              value: widget.characterModel.origin.name),
+                          const SizedBox(height: 4),
+                          _infoWidget(
+                              type: 'Status',
+                              value:
+                                  '${widget.characterModel.status} - ${widget.characterModel.species}'),
+                        ],
+                      ),
                     ),
                   )
                 ],
