@@ -48,7 +48,7 @@ To clone and run this application, you'll need:
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/your-repo/RickAndMorty.git
+   git clone https://github.com/burakodaloglu/RickAndMorty.git
    ```
 2. Navigate into the project directory:
    ```bash
